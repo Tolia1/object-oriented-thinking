@@ -1,0 +1,30 @@
+@startuml
+class Document {
+}
+interface DocumentSource {
+    + hasNextDocument(): boolean
+    + getNextDocument(): Document
+}
+class User {
+    - documentSource: DocumentSource
+    + getDocumentSource(): DocumentSource
+    + receiveResult(res: List<Result>): void
+}
+class StaffMember {
+    - printer: Printer
+    - source: DocumentSource
+    + setDocumentSource(source: DocumentSource): void
+    - processDocuments(): void
+    + getResult(): List<Result>
+}
+class Printer {
+    + printDocument(doc: Document): Result
+}
+
+' relations
+StaffMember -- Printer
+User -- StaffMember
+User "1" *-- "1" DocumentSource
+StaffMember "1" *-- "1" DocumentSource
+DocumentSource "1" *-- "1.." Document
+@enduml
