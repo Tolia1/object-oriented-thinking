@@ -1,0 +1,32 @@
+@startuml
+interface ChessPiece {
+    + move(int rank, char file): void
+    + capture(int rank, char file): void
+}
+class ChessTable {
+    - whitePieces: List<ChessPiece>
+    - blackPieces: List<ChessPiece>
+    + getPiece(int rank, char file): ChessPiece
+}
+class Turn {
+    + take(): Turn
+}
+class Game {
+    - player1: Player
+    - player2: Player
+    - turn: Turn
+    - table: ChessTable
+    + start(): void
+    + displayTable(): void
+}
+class Player {
+}
+
+' relations
+Player "2" -- "1" Game
+Game "1" *-- "1" ChessTable
+Game -- Turn
+Player -- Turn
+Player -- ChessPiece
+ChessTable "1" *-- "2..32" ChessPiece
+@enduml
