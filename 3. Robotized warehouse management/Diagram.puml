@@ -1,0 +1,54 @@
+@startuml
+class Location
+
+class StorageCell {
+    - location: Location
+    + getLocation(): Location
+}
+
+class Storage {
+    - cells: List<StorageCell>
+    + hasNextAvailableCell(): boolean
+    + getNextAvailableCell(): StorageCell
+}
+
+interface Scanner {
+    + scan(pkg: Package): PackageMetadata
+}
+
+class PackageMetadata
+
+class Package {
+    - metadata: PackageMetadata
+}
+
+class Dispatcher {
+    + buildTask(pkgMetadata: PackageMetadata, cell: StorageCell): Task
+}
+
+class RobotController {
+    + enqueue(t: Task): void
+    + dequeue(): Task
+}
+
+class Task
+
+class Robot {
+    + move(l: Location): void
+    + setPackage(pkg: Package): void
+}
+
+' relations
+StorageCell "1" *-- "1" Location
+Storage "1" *-- "0.." StorageCell
+Dispatcher "1" -- Storage
+Dispatcher "1" -- Scanner
+Dispatcher "1" -- RobotController
+RobotController "1" o-- "0.." Robot
+Robot -- Package
+StorageCell -- Package
+Scanner -- Package
+Package "1" -- "1" PackageMetadata
+Dispatcher -- Task
+RobotController -- Task
+@enduml
